@@ -1,25 +1,16 @@
 <html>
   <head>
-    <script src="/zone.js"></script>
   </head>
   <body>
     <h1>PayPal Standalone Callback Example</h1>
 
     <div ng-app="example" ng-controller="checkout">
 
-      <div ng-if="showPayPal">
-        <braintree-paypal
-          options="options"
-          >Loading PayPal button...</braintree-paypal>
-      </div>
-
-      <div ng-if="!showPayPal">
-        Not showing PayPal
-      </div>
+      <braintree-paypal
+        options="paypalOptions"
+        >Loading PayPal button...</braintree-paypal>
 
       <p>(After PayPal flow check for payment method nonce in console)</p>
-
-      <button ng-click="showPayPal = !showPayPal">Toggle PayPal button</button>
 
     </div>
 
@@ -31,11 +22,9 @@
            .constant('clientTokenPath', '/client-token')
            .controller('checkout', function($scope) {
 
-             $scope.showPayPal = true;
-
-             $scope.options = {
+             $scope.paypalOptions = {
                onReady: function() {
-                 console.log('Ready!');
+                 console.log('onReady called');
                },
                onPaymentMethodReceived: function(payload) {
                  console.log('Yay, payload with nonce:', payload);

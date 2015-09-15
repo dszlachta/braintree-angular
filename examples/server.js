@@ -12,9 +12,6 @@ var gateway = braintree.connect({
   privateKey: "YOUR_PRIVATE_KEY"
 });
 
-var angularStr = fs.readFileSync(__dirname+'/../node_modules/angular/angular.js', 'utf8');
-var braintreeAngularStr = fs.readFileSync(__dirname+'/../dist/braintree-angular.js', 'utf8');
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -51,11 +48,17 @@ app.post('/buy-something', function(req, res) {
   });
 });
 
+app.get('/zone.js', function(req, res) {
+  res.send(fs.readFileSync(__dirname+'/../zone.js', 'utf8'));
+});
+
 app.get('/angular.js', function(req, res) {
+  var angularStr = fs.readFileSync(__dirname+'/../node_modules/angular/angular.js', 'utf8');
   res.send(angularStr);
 });
 
 app.get('/braintree-angular.js', function(req, res) {
+  var braintreeAngularStr = fs.readFileSync(__dirname+'/../dist/braintree-angular.js', 'utf8');
   res.send(braintreeAngularStr);
 });
 

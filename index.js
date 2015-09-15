@@ -26,9 +26,38 @@ braingular.directive('braintreePaypal', function() {
     template: '<div id="bt-paypal"></div>',
     controller: function($scope, $braintree) {
       var options = $scope.options || {};
-      options.container = 'bt-paypal';
+      options.paypal = {
+        container: 'bt-paypal'
+      };
+
+
+      // Teardown any existing BT integration
+
+      // Delete callback_json keys off of window
+      for (var key in window) {
+        if (key.indexOf('callback_json') >= 0) {
+          delete window[key];
+        }
+      }
+
+      var addedListeners = [];
+      var braintreeSetupFinished = false;
+
+      if (!window.monkeyPatchedAddEventListener) {
+
+        window.monkeyPatchedAddEventListener = true;
+
+        var oldEventListener = window.addEventListener;
+
+        window.addEventListener = function (type, callback) {
+          console.log('ye', addedListeners);
+          oldEventListener(type, callback);
+        };
+      }
 
       $braintree.setupPayPal(options);
+
+      braintreeSetupFinished = true;
     }
   }
 });
